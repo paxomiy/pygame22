@@ -26,7 +26,7 @@ balls=[]
 r=[]
 smile=pygame.image.load('smile.png').convert()#
 smile_box=smile.get_rect()
-def new_balls():             #создание шаров
+def new_balls():    #создание шаров
     global x, y, r, speed_x, speed_y, balls,number
     number = randint(1, maxnumber)
     for i in range(number):
@@ -78,7 +78,7 @@ def SmileClick(event):#попадание по смайлу
         return scores
 
 def click(event): #счетчик очков
-    global scores
+    global scores,f1,text1
     for i in range(number):
         if((balls[i][0]-event.pos[0])**2+(balls[i][1]-event.pos[1])**2)<=r[i]**2:
             scores += 1
@@ -97,11 +97,13 @@ finished = False
 new_balls()#начальный выброс шаров
 while not finished:
     clock.tick(FPS)
+
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-
+            click(event)
             print('Click!', 'scores=', scores)
             click(event)    #очки по кликам
             SmileClick(event)       # очки по смайлу
@@ -114,6 +116,10 @@ while not finished:
 
 
     screen.fill(BLACK)
+    f1 = pygame.font.Font(None, 50)
+    text1 = f1.render('scores'+str(scores), True, (255, 255, 255))
+    screen.blit(text1, (20, 30))
+    pygame.display.update()
     update_position()
     Smile()
     pygame.display.update()
